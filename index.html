@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GAVLE FARM</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+*{box-sizing:border-box;font-family:Poppins,sans-serif}
+
+/* ===== BODY & THEMES ===== */
+body{
+  margin:0;
+  background:#f4f6f8;
+  color:#111;
+  transition:.4s;
+}
+body.dark{background:#0f172a;color:#fff}
+body.gold{background:#fffaf0;color:#3b2a00}
+
+/* ===== SPLASH ===== */
+#splash{
+  position:fixed;inset:0;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+#splash img{
+  width:220px;
+  animation:zoomLogo 3s ease forwards;
+}
+@keyframes zoomLogo{
+  0%{transform:scale(.3);opacity:0}
+  50%{transform:scale(1);opacity:1}
+  100%{transform:scale(1.6);opacity:0}
+}
+
+/* ===== APP ===== */
+#app{display:none;padding:14px;max-width:520px;margin:auto}
+
+/* ===== GOLDEN PLATE HEADER ===== */
+.header{
+  padding:18px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#ffcc33,#b8860b,#ffcc33);
+  box-shadow:inset 0 2px 6px rgba(255,255,255,.6),
+             inset 0 -4px 8px rgba(0,0,0,.35),
+             0 10px 30px rgba(0,0,0,.3);
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.header img{width:60px}
+.title{
+  font-size:22px;
+  font-weight:800;
+  color:#3b2a00;
+}
+.subtitle{font-size:13px;color:#3b2a00}
+
+/* ===== CARD ===== */
+.card{
+  background:#fff;
+  margin-top:14px;
+  padding:14px;
+  border-radius:18px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+body.dark .card{background:#1e293b;color:#fff}
+body.gold .card{background:#fffdf2}
+
+/* ===== INPUTS ===== */
+.card input,.card select{
+  width:100%;
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:12px;
+  border:1px solid #ddd;
+}
+.card input:focus{
+  outline:none;
+  box-shadow:0 0 0 3px rgba(255,153,0,.35);
+}
+
+/* ===== TABLE ===== */
+.row{
+  display:grid;
+  grid-template-columns:50px 1fr 1fr 1fr;
+  gap:8px;
+  margin-bottom:8px;
+}
+.row div,input{text-align:center}
+.head{font-weight:600;background:#f1f3f6}
+body.dark .head{background:#334155;color:#fff}
+body.gold .head{background:#ffe58f}
+
+/* ===== TOTAL BOX ===== */
+.total-box{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+.total-card{
+  background:linear-gradient(135deg,#131921,#232f3e);
+  color:#fff;
+  padding:18px;
+  border-radius:18px;
+  text-align:center;
+  font-size:18px;
+  transition:.3s;
+}
+body.gold .total-card{
+  background:linear-gradient(135deg,#ffcc33,#b8860b);
+  color:#3b2a00;
+}
+.pulse{animation:pulse .3s}
+@keyframes pulse{
+  from{transform:scale(.95)}
+  to{transform:scale(1)}
+}
+
+/* ===== BUTTON ===== */
+.print{
+  margin:20px auto;
+  display:block;
+  padding:12px 36px;
+  background:#ff9900;
+  border:none;
+  border-radius:30px;
+  font-weight:700;
+}
+.theme-btn{
+  position:fixed;
+  right:16px;
+  bottom:20px;
+  background:#131921;
+  color:#fff;
+  border:none;
+  border-radius:50px;
+  padding:12px 18px;
+  font-weight:700;
+}
+
+/* ===== PRINT ===== */
+@media print{
+  #splash,.theme-btn,.print{display:none}
+}
+</style>
+</head>
+
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <img src="gavle.png">
+</div>
+
+<div id="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <img src="gavle.png">
+    <div>
+      <div class="title">GAVLE FARM</div>
+      <div class="subtitle">Premium Dairy Management</div><div style="margin-top:8px;text-align:left;">
+        <div style="font-size:12px;font-weight:600;letter-spacing:1px;">
+          DIRECTOR & FOUNDER
+        </div>
+        <div style="font-size:16px;font-weight:800;">
+          shailesh gavle
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="card">
+    <label>🐃 Buffalo Number</label>
+    <input type="text">
+
+    <label>💰 Milk Rate (₹ / Litre)</label>
+    <input type="number" id="rate" oninput="calc()">
+    <label>🗂 Season (10-10 Din)</label>
+<select id="season" onchange="generateRows(); calc();">
+  <option value="1">Season 1 (Day 1-10)</option>
+  <option value="2">Season 2 (Day 11-20)</option>
+  <option value="3">Season 3 (Day 21-30)</option>
+</select>
+
+
+    <label>📅 Month</label>
+    <select>
+      <option>January</option><option>February</option>
+      <option>March</option><option>April</option>
+      <option>May</option><option>June</option>
+      <option>July</option><option>August</option>
+      <option>September</option><option>October</option>
+      <option>November</option><option>December</option>
+    </select>
+
+    <label>📆 Year</label>
+    <input type="number" value="2026">
+  </div>
+
+  <!-- TABLE -->
+  <div class="card">
+    <div class="row head">
+      <div>Day</div><div>Morning</div><div>Evening</div><div>Total</div>
+    </div>
+    <div id="rows"></div>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="total-box">
+    <div class="total-card" id="milkBox">🥛 0 Litre</div>
+    <div class="total-card" id="amountBox">₹ 0</div>
+  </div>
+
+  <button class="print" onclick="window.print()">PRINT</button>
+</div>
+
+<button class="theme-btn" onclick="changeTheme()">THEME</button>
+
+<script>
+/* SPLASH */
+setTimeout(()=>{
+  document.getElementById("splash").style.display="none";
+  document.getElementById("app").style.display="block";
+},2800);
+
+
+/* ROW GENERATE FUNCTION (SEASON BASED) */
+const rowsDiv=document.getElementById("rows");
+
+function generateRows(){
+  rowsDiv.innerHTML="";
+
+  let season=document.getElementById("season").value;
+  let startDay=1;
+
+  if(season==2) startDay=11;
+  if(season==3) startDay=21;
+
+  for(let d=0; d<10; d++){
+    let row=document.createElement("div");
+    row.className="row";
+    row.innerHTML=`
+      <div>${startDay+d}</div>
+      <input type="number" min="0" class="milk">
+      <input type="number" min="0" class="milk">
+      <div>0</div>
+    `;
+    rowsDiv.appendChild(row);
+  }
+
+  loadData(); // reload saved data
+}
+
+
+/* CALCULATION */
+function calc(){
+  let totalMilk=0;
+
+  document.querySelectorAll("#rows .row").forEach(r=>{
+    let m=+r.children[1].value||0;
+    let e=+r.children[2].value||0;
+    let total=m+e;
+    r.children[3].innerText=total;
+    totalMilk+=total;
+  });
+
+  let rateVal=+document.getElementById("rate").value||0;
+
+  let milkBox=document.getElementById("milkBox");
+  let amountBox=document.getElementById("amountBox");
+
+  milkBox.innerText=`🥛 ${totalMilk} Litre`;
+  amountBox.innerText=`₹ ${totalMilk*rateVal}`;
+}
+
+
+/* ENTER → NEXT INPUT */
+document.addEventListener("keydown", function(e){
+  if(e.key==="Enter"){
+    e.preventDefault();
+    const inputs=[...document.querySelectorAll("input,select")];
+    const index=inputs.indexOf(document.activeElement);
+    if(index>-1 && index<inputs.length-1){
+      inputs[index+1].focus();
+    }
+  }
+});
+
+
+/* AUTO SAVE SYSTEM (NOTEPAD STYLE) */
+function saveData(){
+  let data={
+    buffalo:document.querySelector("input[type=text]").value,
+    rate:document.getElementById("rate").value,
+    season:document.getElementById("season").value,
+    month:document.querySelectorAll("select")[1].value,
+    year:document.querySelector("input[type=number]:not(#rate)").value,
+    milk:[]
+  };
+
+  document.querySelectorAll(".milk").forEach(i=>{
+    data.milk.push(i.value);
+  });
+
+  localStorage.setItem("gavleData",JSON.stringify(data));
+}
+
+function loadData(){
+  let saved=localStorage.getItem("gavleData");
+  if(!saved) return;
+
+  let data=JSON.parse(saved);
+
+  document.querySelector("input[type=text]").value=data.buffalo||"";
+  document.getElementById("rate").value=data.rate||"";
+  document.getElementById("season").value=data.season||"1";
+  document.querySelectorAll("select")[1].value=data.month||"January";
+  document.querySelector("input[type=number]:not(#rate)").value=data.year||"2026";
+
+  generateRows();
+
+  document.querySelectorAll(".milk").forEach((i,index)=>{
+    i.value=data.milk[index]||"";
+  });
+
+  calc();
+}
+
+
+/* REAL TIME AUTO SAVE */
+document.addEventListener("input", function() {
+  saveData();
+  calc();
+});
+
+
+/* THEME */
+let t=0;
+const themes=["","dark","gold"];
+function changeTheme(){
+  document.body.className=themes[++t%themes.length];
+}
+
+
+/* START */
+window.onload=function(){
+  generateRows();
+  loadData();
+};
+
+</script>
+</body>
+</html>
